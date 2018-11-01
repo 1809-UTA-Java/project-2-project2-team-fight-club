@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/osx,mule,windows,eclipse
-# Edit at https://www.gitignore.io/?templates=osx,mule,windows,eclipse
+# Created by https://www.gitignore.io/api/osx,mule,maven,windows,eclipse
+# Edit at https://www.gitignore.io/?templates=osx,mule,maven,windows,eclipse
 
 ### Eclipse ###
 
@@ -72,10 +72,21 @@ local.properties
 
 .sts4-cache/
 
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
 ### mule ###
 .studio/
 flows/
-target/
 catalog/
 reports/
 .mule/
@@ -134,4 +145,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/osx,mule,windows,eclipse
+# End of https://www.gitignore.io/api/osx,mule,maven,windows,eclipse
