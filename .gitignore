@@ -85,6 +85,7 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 ### mule ###
+mule-project.xml
 .studio/
 flows/
 catalog/
