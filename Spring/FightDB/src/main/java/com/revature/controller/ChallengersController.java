@@ -2,6 +2,7 @@ package com.revature.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,10 +60,12 @@ public class ChallengersController {
 		
 		for(Pokemon mon : pokemons) {
 			mon.setUserId(user.getId());
+			mon.setId(UUID.randomUUID().toString());
 		}
 		
 		for(StarWars character: sw) {
 			character.setUserId(user.getId());
+			character.setId(UUID.randomUUID().toString());
 		}
 		
 		pokemon_repo.saveAll(pokemons);
