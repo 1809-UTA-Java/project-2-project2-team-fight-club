@@ -1,7 +1,6 @@
 package com.revature.RandomUserAPI.model;
 
 import java.util.Arrays;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -10,7 +9,7 @@ public class User {
 	private Info info;
 
 	public User() {
-		
+
 	}
 
 	public Results[] getResults() {
