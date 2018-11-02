@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,10 @@ public class ChallengersController {
 	
 	@GetMapping("/challengers")
 	public List<Team> challengers() {
+		
 		Team teamA = buildTeam();
 		Team teamB = buildTeam();
-		List<Team> challengers = null;
+		List<Team> challengers = new ArrayList<Team>();
 		challengers.add(teamA);
 		challengers.add(teamB);
 		
@@ -39,19 +41,30 @@ public class ChallengersController {
 	}
 	
 	private Team buildTeam() {
-		Team team = null;
 		User user = users_repo.findUser().get(0);
-		team.setUser(user);
-		team.setPokemon(pokemon_repo.findByUserId(user.getId()));
-		team.setStarwars(sw_repo.findByUserId(user.getId()));
+		List<Pokemon> pokemon = pokemon_repo.findByUserId(user.getId());
+		List<StarWars> sw = sw_repo.findByUserId(user.getId());
+		Team team = new Team(user, pokemon, sw);
+		
 		return team;
+		
 	}
 	
 	@PostMapping("/addTeam")
 	public void addTeam(@RequestBody Team team) {
-		users_repo.save(team.getUser());
+		User user = team.getUser();
+		users_repo.save(user);
 		List<Pokemon> pokemons = team.getPokemon();
 		List<StarWars> sw =team.getStarwars();
+		
+		for(Pokemon mon : pokemons) {
+			mon.setUserId(user.getId());
+		}
+		
+		for(StarWars character: sw) {
+			character.setUserId(user.getId());
+		}
+		
 		pokemon_repo.saveAll(pokemons);
 		sw_repo.saveAll(sw);
 	}
