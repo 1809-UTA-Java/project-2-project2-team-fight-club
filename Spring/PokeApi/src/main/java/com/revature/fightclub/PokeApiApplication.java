@@ -6,6 +6,8 @@ import java.util.Random;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.revature.fightclub.Model.Pokemon;
+
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 
@@ -14,19 +16,22 @@ public class PokeApiApplication {
 
 	public static void main(String[] args) {
 		// SpringApplication.run(PokeApiApplication.class, args);
-		List<String> pokeList = new ArrayList<String>();
+		List<Pokemon> pokeList = new ArrayList<>();
 		Random random = new Random();
 		int numofpoke = random.nextInt(4) + 1;
 		
 		for(int pokecounter=1; pokecounter<=numofpoke; pokecounter++){
-		PokeApi pokeApi = new PokeApiClient();
-		int rng = random.nextInt(802) + 1;
-		int battleLevel = random.nextInt(10) + 1;
-		String pokemon = pokeApi.getPokemonSpecies(rng).getId() + "," + pokeApi.getPokemonSpecies(rng).getName() + ","
-				+ battleLevel;
-		pokeList.add(pokemon);
+			Pokemon pokemon = new Pokemon();
+			PokeApi pokeApi = new PokeApiClient();
+			int index = random.nextInt(802) + 1;
+			int battleLevel = random.nextInt(10) + 1;
+			//String pokemon = pokeApi.getPokemonSpecies(rng).getId() + " " + pokeApi.getPokemonSpecies(rng).getName() + " " + battleLevel;
+			pokemon.setPokeID(index);
+			pokemon.setPokeName(pokeApi.getPokemonSpecies(index).getName());
+			pokemon.setBattleLevel(battleLevel);
+			pokeList.add(pokemon);
 		}
-		for(String poke : pokeList){
+		for(Pokemon poke : pokeList){
 			System.out.println(poke);
 		}
 	}
