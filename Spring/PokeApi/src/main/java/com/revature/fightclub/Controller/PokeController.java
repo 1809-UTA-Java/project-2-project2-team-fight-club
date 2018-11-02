@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,8 +38,8 @@ public class PokeController {
 		return pokeList; //[pokeID=ID, pokeName=Name, battleLevel=Battle level]
 	}
 
-	@RequestMapping("/get")
-	public List<Pokemon> getPoke(int numofpoke) { // Returns an array of pokemon
+	@RequestMapping("/get/{numofpoke}")
+	public List<Pokemon> getPoke(@PathVariable("numofpoke") int numofpoke) { // Returns an array of pokemon
 													// equal to the number
 													// passed to it
 		List<Pokemon> pokeList = new ArrayList<>();
@@ -55,6 +56,6 @@ public class PokeController {
 			pokeList.add(pokemon);
 		}
 
-		return pokeList; //[pokeID=ID, pokeName=Name, battleLevel=Battle level]
+		return pokeList; 
 	}
 }
