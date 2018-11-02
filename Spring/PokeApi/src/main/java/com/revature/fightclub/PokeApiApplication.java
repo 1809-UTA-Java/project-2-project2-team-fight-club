@@ -25,7 +25,6 @@ public class PokeApiApplication {
 			PokeApi pokeApi = new PokeApiClient();
 			int index = random.nextInt(802) + 1;
 			int battleLevel = random.nextInt(10) + 1;
-			//String pokemon = pokeApi.getPokemonSpecies(rng).getId() + " " + pokeApi.getPokemonSpecies(rng).getName() + " " + battleLevel;
 			pokemon.setPokeID(index);
 			pokemon.setPokeName(pokeApi.getPokemonSpecies(index).getName());
 			pokemon.setBattleLevel(battleLevel);
