@@ -13,9 +13,6 @@ public class UserController {
 		RestTemplate restTemplate = new RestTemplate();
 		User user = restTemplate.getForObject("https://randomuser.me/api/?inc=name,id", User.class);
 		
-		System.out.println("getUser()");
-		System.out.println(user.getResults()[0].getName().getFirst());
-		
 		return user;
 	}
 }
