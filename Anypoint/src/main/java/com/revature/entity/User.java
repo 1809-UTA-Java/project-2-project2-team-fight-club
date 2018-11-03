@@ -29,10 +29,6 @@ public class User implements Callable{
 		this.name = name;
 	}
 	
-	public User getUser() {
-		return this;
-	}
-
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
