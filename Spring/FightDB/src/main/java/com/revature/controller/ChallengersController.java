@@ -30,8 +30,13 @@ public class ChallengersController {
 	@Autowired
 	private PokemonRepository pokemon_repo;
 	
+	@GetMapping("/userTest")
+	public void userTest() {
+		System.out.println("Get Request");
+	}
 	@PostMapping("/user")
 	public void postNewUser(@RequestBody User user){
+		System.out.println("add user");
 		users_repo.save(user);
 	}
 	

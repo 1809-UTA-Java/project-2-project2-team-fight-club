@@ -26,10 +26,5 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
 	}
-	public User(String id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-	
+
 }
