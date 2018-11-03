@@ -14,17 +14,30 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
     <http:request-config name="HTTP_Request_Configuration2" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
     <spring:beans>
     		<spring:bean class="com.revature.entity.User" name="User" />
+    		<spring:bean class="com.revature.controller.UserController" name="Controller" />
     </spring:beans>
     <http:request-config name="HTTP_Request_Configuration3" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
     <http:request-config name="HTTP_Request_Configuration4" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration5" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration6" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration7" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration8" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
     <flow name="project2-fightclubFlow">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
         <http:request config-ref="HTTP_Request_Configuration" path="/get" method="GET" doc:name="HTTP - Get Random User"/>
-        <echo-component doc:name="Echo"/>
-        <invoke object-ref="User" method="setName" methodArguments="#[json:results[0]/name/first]" doc:name="Invoke - Set Name"/>
-        <echo-component doc:name="Echo"/>
-        <invoke object-ref="User" method="setId" methodArguments="#[json:results[0]/id/value]" doc:name="Invoke - Set Id"/>
-        <echo-component doc:name="Echo"/>
-        <component class="com.revature.entity.User" doc:name="Java"/>
+        <set-variable variableName="name" value="#[json:results[0]/name/first]" doc:name="Name"/>
+        <set-variable variableName="id" value="#[json:results[0]/id/value]" doc:name="Id"/>
+        <invoke object-ref="Controller" method="setUser" methodArguments="#[flowVars.id], #[flowVars.name]" doc:name="Invoke"/>
+        <response>
+            <echo-component doc:name="Echo"/>
+        </response>
+        <response>
+            <http:request config-ref="HTTP_Request_Configuration8" path="/user" method="POST" doc:name="HTTP"/>
+        </response>
+        <invoke object-ref="Controller" method="getUser" doc:name="Invoke"/>
+        <response>
+            <echo-component doc:name="Echo"/>
+        </response>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
     </flow>
 </mule>

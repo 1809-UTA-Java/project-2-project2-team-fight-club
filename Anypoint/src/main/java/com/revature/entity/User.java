@@ -1,9 +1,11 @@
 package com.revature.entity;
 
+import org.mule.api.MuleEventContext;
+import org.mule.api.lifecycle.Callable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class User {
+public class User implements Callable{
 	private String id;
 	private String name;
 
@@ -27,13 +29,15 @@ public class User {
 		this.name = name;
 	}
 	
-	public User getUser() {
-		return this;
-	}
-
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
+	}
+
+	@Override
+	public Object onCall(MuleEventContext eventContext) throws Exception {
+		
+		return null;
 	}
 
 }
