@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,21 @@ public class ChallengersController {
 	private StarWarsRepository sw_repo;
 	@Autowired
 	private PokemonRepository pokemon_repo;
+	
+	@PostMapping("/user")
+	public void postNewUser(@RequestBody User user){
+		users_repo.save(user);
+	}
+	
+	@PostMapping("/pokemon/{id}")
+	public void postPokemon(@PathVariable(value = "id") String id, @RequestBody Pokemon pokemon) {
+		pokemon_repo.save(pokemon);
+	}
+	
+	@PostMapping("/starwars/{id}")
+	public void postStarWars(@PathVariable(value = "id") String id, @RequestBody Pokemon starwars) {
+		pokemon_repo.save(starwars);
+	}
 	
 	@GetMapping("/challengers")
 	public List<Team> challengers() {
