@@ -1,9 +1,11 @@
 package com.revature.fightclub.Model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Pokemon {
+	@Id
 	int pokeID;
 	String pokeName;
 	int battleLevel;
