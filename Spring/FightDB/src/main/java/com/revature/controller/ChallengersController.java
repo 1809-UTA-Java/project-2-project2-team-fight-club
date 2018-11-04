@@ -40,14 +40,16 @@ public class ChallengersController {
 		users_repo.save(user);
 	}
 	
-	@PostMapping("/pokemon/{id}")
-	public void postPokemon(@PathVariable(value = "id") String id, @RequestBody Pokemon pokemon) {
+	@PostMapping("/pokemon")
+	public void postPokemon(@RequestBody Pokemon pokemon) {
+		pokemon.setId(UUID.randomUUID().toString());
 		pokemon_repo.save(pokemon);
 	}
 	
-	@PostMapping("/starwars/{id}")
-	public void postStarWars(@PathVariable(value = "id") String id, @RequestBody Pokemon starwars) {
-		pokemon_repo.save(starwars);
+	@PostMapping("/starwars")
+	public void postStarWars(@RequestBody StarWars starwars) {
+		starwars.setId(UUID.randomUUID().toString());
+		sw_repo.save(starwars);
 	}
 	
 	@GetMapping("/challengers")
