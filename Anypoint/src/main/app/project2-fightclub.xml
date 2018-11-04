@@ -1,43 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
-http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd">
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
     <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration" host="localhost" port="7861" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration1" host="localhost" port="8083" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration2" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
-    <spring:beans>
-    		<spring:bean class="com.revature.entity.User" name="User" />
-    		<spring:bean class="com.revature.controller.UserController" name="Controller" />
-    </spring:beans>
-    <http:request-config name="HTTP_Request_Configuration3" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration4" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration5" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration6" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration7" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration8" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="User" host="localhost" port="7861" basePath="/" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="Fight_DB" host="localhost" port="8083" basePath="/api" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="Pokemon_API" host="localhost" port="8082" basePath="/" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="SW" host="localhost" port="8838" basePath="/" doc:name="HTTP Request Configuration"/>
     <flow name="project2-fightclubFlow">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/get" method="GET" doc:name="HTTP - Get Random User"/>
-        <set-variable variableName="name" value="#[json:results[0]/name/first]" doc:name="Name"/>
-        <set-variable variableName="id" value="#[json:results[0]/id/value]" doc:name="Id"/>
-        <invoke object-ref="Controller" method="setUser" methodArguments="#[flowVars.id], #[flowVars.name]" doc:name="Invoke"/>
-        <response>
-            <echo-component doc:name="Echo"/>
-        </response>
-        <response>
-            <http:request config-ref="HTTP_Request_Configuration8" path="/user" method="POST" doc:name="HTTP"/>
-        </response>
-        <invoke object-ref="Controller" method="getUser" doc:name="Invoke"/>
-        <response>
-            <echo-component doc:name="Echo"/>
-        </response>
-        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <flow-ref name="User_Sub" doc:name="Generate User"/>
+        <set-variable variableName="counter" value="#[(int) (Math.random()*6)+1]" doc:name="Variable"/>
+        <logger message="start: #[flowVars.counter]" level="INFO" doc:name="Copy_of_Logger"/>
+        <flow-ref name="Pokemon_Loop" doc:name="Generate Pokemon"/>
+        <flow-ref name="SW_loop" doc:name="Generate SW Character"/>
     </flow>
+    <flow name="SW_loop">
+        <choice doc:name="Choice">
+            <when expression="#[flowVars.counter &gt;0]">
+                <logger message="sw chars:  #[flowVars.counter]" level="INFO" doc:name="Logger"/>
+                <set-variable variableName="counter" value="#[flowVars.counter -1]" doc:name="Decrement Counter"/>
+                <flow-ref name="SW_Sub" doc:name="SW Sub"/>
+                <flow-ref name="SW_loop" doc:name="SW_loop"/>
+            </when>
+            <otherwise>
+                <logger message="done creating sw characters" level="INFO" doc:name="Logger"/>
+                <set-variable variableName="counter" value="#[(int) Math.random()*6+1]" doc:name="Reset Counter"/>
+            </otherwise>
+        </choice>
+    </flow>
+    <flow name="Pokemon_Loop">
+        <choice doc:name="Choice">
+            <when expression="#[flowVars.counter &gt;0]">
+                <logger message="pokemons: #[flowVars.counter]" level="INFO" doc:name="Logger"/>
+                <set-variable variableName="counter" value="#[flowVars.counter -1]" doc:name="Decrement Counter"/>
+                <flow-ref name="Pokemon_Sub" doc:name="Pokemon_Sub"/>
+                <flow-ref name="Pokemon_Loop" doc:name="Pokemon_Loop"/>
+            </when>
+            <otherwise>
+                <logger message="done creating pokemons" level="INFO" doc:name="Logger"/>
+                <set-variable variableName="counter" value="#[(int) Math.random()*6+1]" doc:name="Reset Counter"/>
+            </otherwise>
+        </choice>
+    </flow>
+    <sub-flow name="User_Sub">
+        <http:request config-ref="User" path="/get" method="GET" doc:name="HTTP"/>
+        <set-session-variable variableName="userId" value="#[json:results[0]/id/value]" doc:name="Session Variable"/>
+        <set-payload value="{&quot;name&quot;: &quot;#[json:results[0]/name/first] #[json:results[0]/name/last]&quot;, &quot;id&quot;: &quot;#[json:results[0]/id/value]&quot;}" doc:name="Set Payload"/>
+        <logger message="#[sessionVars.userId]" level="INFO" doc:name="Logger"/>
+        <echo-component doc:name="Echo"/>
+        <http:request config-ref="Fight_DB" path="/user" method="POST" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Content-Type" value="application/json"/>
+            </http:request-builder>
+        </http:request>
+    </sub-flow>
+    <sub-flow name="SW_Sub">
+        <http:request config-ref="SW" path="/get" method="GET" doc:name="HTTP"/>
+        <set-payload value="{&quot;charId&quot;: &quot;#[json:name]&quot;, &quot;userId&quot;: &quot;#[sessionVars.userId]&quot;}" doc:name="Set Payload"/>
+        <echo-component doc:name="Echo"/>
+        <http:request config-ref="Fight_DB" path="/starwars" method="POST" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Content-Type" value="application/json"/>
+            </http:request-builder>
+        </http:request>
+    </sub-flow>
+    <sub-flow name="Pokemon_Sub">
+        <http:request config-ref="Pokemon_API" path="/get/1" method="GET" doc:name="HTTP"/>
+        <echo-component doc:name="Echo"/>
+        <set-payload value="{&quot;charId&quot;: &quot;#[json:[0]/pokeID]&quot;, &quot;userId&quot;: &quot;#[sessionVars.userId]&quot;}" doc:name="Set Payload"/>
+        <http:request config-ref="Fight_DB" path="/pokemon" method="POST" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Content-Type" value="application/json"/>
+            </http:request-builder>
+        </http:request>
+    </sub-flow>
 </mule>

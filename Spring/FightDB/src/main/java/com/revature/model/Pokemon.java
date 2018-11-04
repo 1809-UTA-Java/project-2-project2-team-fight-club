@@ -1,5 +1,6 @@
 package com.revature.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,8 +9,11 @@ import javax.persistence.Table;
 @Table (name = "pokemon")
 public class Pokemon {
 	@Id
+	@Column (name = "id")
 	private String id;
+	@Column (name = "charid")
 	private String charId;
+	@Column (name = "userid")
 	private String userId;
 	
 	public String getCharId() {
@@ -34,12 +38,4 @@ public class Pokemon {
 	public String toString() {
 		return "Pokemon [charId=" + charId + ", userId=" + userId + ", id=" + id + "]";
 	}
-	public Pokemon(String charId, String userId, String id) {
-		super();
-		this.charId = charId;
-		this.userId = userId;
-		this.id = id;
-	}
-	
-	
 }

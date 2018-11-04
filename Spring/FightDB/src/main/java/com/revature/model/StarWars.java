@@ -1,5 +1,6 @@
 package com.revature.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,7 +10,9 @@ import javax.persistence.Table;
 public class StarWars {
 	@Id
 	private String id;
+	@Column (name = "userid")
 	private String userId;
+	@Column (name = "charid")
 	private String charId;
 	
 	public String getUserId() {
@@ -33,12 +36,6 @@ public class StarWars {
 	@Override
 	public String toString() {
 		return "StarWars [userId=" + userId + ", charId=" + charId + ", id=" + id + "]";
-	}
-	public StarWars(String userId, String charId, String id) {
-		super();
-		this.userId = userId;
-		this.charId = charId;
-		this.id = id;
 	}
 	
 }
