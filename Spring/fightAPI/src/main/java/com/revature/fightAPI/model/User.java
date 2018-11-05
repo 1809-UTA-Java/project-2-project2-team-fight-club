@@ -6,10 +6,8 @@ public class User {
 
 	@JsonProperty("id")
 	public String id;
-	@JsonProperty("first")
-	public String first;
-	@JsonProperty("last")
-	public String last;
+	@JsonProperty("name")
+	public String name;
 
 	public String getId() {
 		return id;
@@ -19,25 +17,17 @@ public class User {
 		this.id = id;
 	}
 
-	public String getFirst() {
-		return first;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirst(String first) {
-		this.first = first;
-	}
-
-	public String getLast() {
-		return last;
-	}
-
-	public void setLast(String last) {
-		this.last = last;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", first=" + first + ", last=" + last + "]";
+		return "User [id=" + id + ", name=" + name + "]";
 	}
 
 }
