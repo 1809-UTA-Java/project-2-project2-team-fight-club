@@ -1,4 +1,4 @@
-#Team Fight Club
+#Team Fight Club  
 This application integrates five Spring Boot applications to create teams composed of starwars characters and pokemon characters by typing a battle command in a Slack thread. The main feature occurs when a battle command is entered, and the applications picks to random teams to fight.
 ###Getting started
 1. Create a JDBC connection and run the ddl.sql and the dml.slq files found in the sql directory. 
