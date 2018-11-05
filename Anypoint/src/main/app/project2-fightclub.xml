@@ -20,12 +20,13 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         <set-variable variableName="counter" value="#[(int) (Math.random()*6)+1]" doc:name="Variable"/>
         <logger message="start: #[flowVars.counter]" level="INFO" doc:name="Copy_of_Logger"/>
         <flow-ref name="Pokemon_Loop" doc:name="Generate Pokemon"/>
+        <logger message="start: #[flowVars.counter]" level="INFO" doc:name="Copy_of_Copy_of_Logger"/>
         <flow-ref name="SW_loop" doc:name="Generate SW Character"/>
     </flow>
     <flow name="SW_loop">
         <choice doc:name="Choice">
             <when expression="#[flowVars.counter &gt;0]">
-                <logger message="sw chars:  #[flowVars.counter]" level="INFO" doc:name="Logger"/>
+                <logger message="sw chars counter:  #[flowVars.counter]" level="INFO" doc:name="Logger"/>
                 <set-variable variableName="counter" value="#[flowVars.counter -1]" doc:name="Decrement Counter"/>
                 <flow-ref name="SW_Sub" doc:name="SW Sub"/>
                 <flow-ref name="SW_loop" doc:name="SW_loop"/>
@@ -39,22 +40,25 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     <flow name="Pokemon_Loop">
         <choice doc:name="Choice">
             <when expression="#[flowVars.counter &gt;0]">
-                <logger message="pokemons: #[flowVars.counter]" level="INFO" doc:name="Logger"/>
+                <logger message="pokemons counter: #[flowVars.counter]" level="INFO" doc:name="Logger"/>
                 <set-variable variableName="counter" value="#[flowVars.counter -1]" doc:name="Decrement Counter"/>
                 <flow-ref name="Pokemon_Sub" doc:name="Pokemon_Sub"/>
                 <flow-ref name="Pokemon_Loop" doc:name="Pokemon_Loop"/>
             </when>
             <otherwise>
                 <logger message="done creating pokemons" level="INFO" doc:name="Logger"/>
-                <set-variable variableName="counter" value="#[(int) Math.random()*6+1]" doc:name="Reset Counter"/>
+                <set-variable variableName="counter" value="#[(int) (Math.random()*6)+1]" doc:name="Reset Counter"/>
             </otherwise>
         </choice>
     </flow>
     <sub-flow name="User_Sub">
         <http:request config-ref="User" path="/get" method="GET" doc:name="HTTP"/>
         <set-session-variable variableName="userId" value="#[json:results[0]/id/value]" doc:name="Session Variable"/>
-        <set-payload value="{&quot;name&quot;: &quot;#[json:results[0]/name/first] #[json:results[0]/name/last]&quot;, &quot;id&quot;: &quot;#[json:results[0]/id/value]&quot;}" doc:name="Set Payload"/>
-        <logger message="#[sessionVars.userId]" level="INFO" doc:name="Logger"/>
+        <set-payload value="{
+&quot;name&quot;: &quot;#[json:results[0]/name/first] #[json:results[0]/name/last]&quot;, 
+&quot;id&quot;: &quot;#[json:results[0]/id/value]&quot;
+}" doc:name="Set Payload"/>
+        <logger message="User_Sub userId:  #[sessionVars.userId]" level="INFO" doc:name="Logger"/>
         <echo-component doc:name="Echo"/>
         <http:request config-ref="Fight_DB" path="/user" method="POST" doc:name="HTTP">
             <http:request-builder>
@@ -64,8 +68,13 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     </sub-flow>
     <sub-flow name="SW_Sub">
         <http:request config-ref="SW" path="/get" method="GET" doc:name="HTTP"/>
-        <set-payload value="{&quot;charId&quot;: &quot;#[json:name]&quot;, &quot;userId&quot;: &quot;#[sessionVars.userId]&quot;}" doc:name="Set Payload"/>
         <echo-component doc:name="Echo"/>
+        <set-payload value="{
+&quot;charId&quot;: &quot;#[json:id]&quot;, 
+&quot;userId&quot;: &quot;#[sessionVars.userId]&quot;,
+&quot;name&quot;:&quot;#[json:name]&quot;,
+&quot;battleRank&quot;:&quot;#[json:battleRank]&quot;
+}" doc:name="Set Payload"/>
         <http:request config-ref="Fight_DB" path="/starwars" method="POST" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Content-Type" value="application/json"/>
@@ -75,7 +84,12 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     <sub-flow name="Pokemon_Sub">
         <http:request config-ref="Pokemon_API" path="/get/1" method="GET" doc:name="HTTP"/>
         <echo-component doc:name="Echo"/>
-        <set-payload value="{&quot;charId&quot;: &quot;#[json:[0]/pokeID]&quot;, &quot;userId&quot;: &quot;#[sessionVars.userId]&quot;}" doc:name="Set Payload"/>
+        <set-payload value="{
+&quot;charId&quot;: &quot;#[json:[0]/pokeID]&quot;, 
+&quot;userId&quot;: &quot;#[sessionVars.userId]&quot;,
+&quot;name&quot;: &quot;#[json:[0]/pokeName]&quot;,
+&quot;battleRank&quot;: &quot;#[json:[0]/battleLevel]&quot;
+}" doc:name="Set Payload"/>
         <http:request config-ref="Fight_DB" path="/pokemon" method="POST" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Content-Type" value="application/json"/>
