@@ -33,7 +33,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
             </when>
             <otherwise>
                 <logger message="done creating sw characters" level="INFO" doc:name="Logger"/>
-                <set-variable variableName="counter" value="#[(int) Math.random()*6+1]" doc:name="Reset Counter"/>
+                <set-variable variableName="counter" value="#[(int) (Math.random()*6)+1]" doc:name="Reset Counter"/>
             </otherwise>
         </choice>
     </flow>

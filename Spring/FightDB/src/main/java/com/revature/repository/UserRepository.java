@@ -12,6 +12,9 @@ import com.revature.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-	@Query(value="SELECT * FROM( SELECT * FROM Users ORDER BY dbms_random.value ) WHERE rownum = 1", nativeQuery = true)	
-	List<User> findUsers();
+	@Query(value="SELECT * FROM" + 
+			"( SELECT * FROM USERS" + 
+			"ORDER BY dbms_random.value )" + 
+			"WHERE rownum = 1", nativeQuery = true)
+	List<User> findUser();r
 }
