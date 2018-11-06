@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,15 +54,16 @@ public class ChallengersController {
 	}
 	
 	@GetMapping("/challengers")
-	public List<Team> challengers() {
+	public HashMap<String, List<?>> challengers() {
 		
 		Team teamA = buildTeam();
 		Team teamB = buildTeam();
 		List<Team> challengers = new ArrayList<Team>();
 		challengers.add(teamA);
 		challengers.add(teamB);
-		
-		return challengers;
+		HashMap<String,List<?>> payload = new HashMap<>();
+		payload.put("results", challengers);
+		return payload;
 	}
 	
 	private Team buildTeam() {

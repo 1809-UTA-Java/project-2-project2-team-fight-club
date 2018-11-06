@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Pokemon {
 
-	@JsonProperty("pokeID")
+	@JsonProperty("charId")
 	public String pokeID;
-	@JsonProperty("pokeName")
+	@JsonProperty("name")
 	public String pokeName;
-	@JsonProperty("battleLevel")
+	@JsonProperty("battleRank")
 	public String battleLevel;
 
 	public String getPokeID() {

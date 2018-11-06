@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StarWars {
 	
-	@JsonProperty("id")
+	@JsonProperty("charId")
 	public String id;
 	@JsonProperty("name")
 	public String name;

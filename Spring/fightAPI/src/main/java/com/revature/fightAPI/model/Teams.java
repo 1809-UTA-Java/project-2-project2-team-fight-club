@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Teams {
-	@JsonProperty("teams")
+	@JsonProperty("results")
 	public List<Team> teams;
 
 	public List<Team> getTeams() {

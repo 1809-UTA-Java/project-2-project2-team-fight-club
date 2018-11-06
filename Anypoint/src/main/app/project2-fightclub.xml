@@ -12,8 +12,12 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     <http:request-config name="Fight_DB" host="localhost" port="8084" basePath="/api" doc:name="HTTP Request Configuration"/>
     <http:request-config name="Pokemon_API" host="localhost" port="8082" basePath="/" doc:name="HTTP Request Configuration"/>
     <http:request-config name="SW" host="localhost" port="8838" basePath="/" doc:name="HTTP Request Configuration"/>
+<<<<<<< HEAD
+    <http:request-config name="HTTP_Request_Configuration" host="localhost" port="8084" basePath="/get" doc:name="HTTP Request Configuration"/>
+=======
     <http:request-config name="Fight" host="localhost" port="8084" basePath="/" doc:name="HTTP Request Configuration"/>
     <http:request-config name="Fight_DB" host="localhost" port="8083" doc:name="HTTP Request Configuration"/>
+>>>>>>> branch 'glenn' of https://github.com/1809-UTA-Java/project-2-project2-team-fight-club.git
     <flow name="project2-fightclubFlow">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
         <flow-ref name="User_Sub" doc:name="Generate User"/>
@@ -96,8 +100,15 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
             </http:request-builder>
         </http:request>
     </sub-flow>
+<<<<<<< HEAD
+    <flow name="project2-fightclubFlow1">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/fight" allowedMethods="get" doc:name="HTTP"/>
+        <http:request config-ref="HTTP_Request_Configuration" path="/winner" method="GET" doc:name="HTTP"/>
+    </flow>
+=======
     <sub-flow name="Fight_Sub">
         <http:request config-ref="Fight" path="/get/winner" method="GET" doc:name="HTTP"/>
         <echo-component doc:name="Echo"/>
     </sub-flow>
+>>>>>>> branch 'glenn' of https://github.com/1809-UTA-Java/project-2-project2-team-fight-club.git
 </mule>
