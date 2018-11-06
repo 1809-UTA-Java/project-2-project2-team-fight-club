@@ -2,10 +2,16 @@ package com.revature.fightAPI.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Team {
-	private User user;
-	private List<Pokemon> pokemon;
-	private List<StarWars> starwars;
+	
+	@JsonProperty("user")
+	public User user;
+	@JsonProperty("pokemon")
+	public List<Pokemon> pokemon;
+	@JsonProperty("starwars")
+	public List<StarWars> starwars;
 
 	public User getUser() {
 		return user;

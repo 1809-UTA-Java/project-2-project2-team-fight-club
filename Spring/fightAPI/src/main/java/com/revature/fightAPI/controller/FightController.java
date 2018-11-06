@@ -1,7 +1,11 @@
 package com.revature.fightAPI.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,67 +18,80 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import com.revature.fightAPI.model.StarWars;
+import com.revature.fightAPI.model.Team;
+import com.revature.fightAPI.model.Teams;
+import com.revature.fightAPI.model.User;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/get")
 public class FightController {
 
-	@GetMapping(value = "/getwinner")
-	public StarWars getWinner() {
+	@GetMapping(value = "/winner")
+	public String getWinner() {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		String resourceURL = "http://localhost:8838/get";
+		String resourceURL = "http://localhost:8083/challengers";
 		HttpEntity<String> entity = new HttpEntity<String>(headers);
-		ResponseEntity<StarWars> swResponse = restTemplate.exchange(resourceURL, HttpMethod.GET, entity,
-				StarWars.class);
-		ResponseEntity<StarWars> swResponse2 = restTemplate.exchange(resourceURL, HttpMethod.GET, entity,
-				StarWars.class);
+		ResponseEntity<Teams> swResponse = restTemplate.exchange(resourceURL, HttpMethod.GET, entity,
+				Teams.class);
+		
+
 		if (swResponse.getStatusCode() == HttpStatus.OK) {
 			/*
-			 * for(StarWars starwars : response.getBody()) { System.out.println(starwars.id
-			 * + " " + starwars.name + " "); }
-			 */
-
-			StarWars sw = swResponse.getBody();
-			StarWars sw2 = swResponse2.getBody();
-
-			System.out.println("Name");
-			System.out.println(sw.name);
-
-			System.out.println("Battle rank");
-			System.out.println(sw.battleRank);
-
-			System.out.println("Name");
-			System.out.println(sw2.name);
-
-			System.out.println("Battle rank");
-			System.out.println(sw2.battleRank);
-
-			Integer.valueOf(sw.battleRank);
-			if (Integer.valueOf(sw.battleRank) > Integer.valueOf(sw2.battleRank)) {
-				System.out.println("Winner: " + sw.name);
-				return sw;
-			} else if (Integer.valueOf(sw.battleRank) < Integer.valueOf(sw2.battleRank)) {
-				System.out.println("Winner: " + sw2.name);
-				return sw2;
+			 for(Team team : swResponse.getBody()) { 
+				 System.out.println(team.getStarwars() + " " + team.getPokemon() + " "); 
+				 //User user1 = team.getUser();
+				 String winner = team.getUser().name;
+				 return winner;
+			 }
+			*/
+			
+			// Store Json data 
+			Teams data = swResponse.getBody();
+			
+			/* Uncomment to display information to console
+			System.out.println("User");
+			System.out.println(data.teams.get(0).user.name);
+			System.out.println("StarWars");
+			System.out.println(data.teams.get(0).starwars.get(0).name);
+			System.out.println(data.teams.get(0).starwars.get(0).battleRank);
+			System.out.println("Pokemon");
+			System.out.println(data.teams.get(0).pokemon.get(0).pokeName);
+			System.out.println(data.teams.get(0).pokemon.get(0).battleLevel);
+			System.out.println("User");
+			System.out.println(data.teams.get(1).user.name);
+			System.out.println("StarWars");
+			System.out.println(data.teams.get(1).starwars.get(1).name);
+			System.out.println(data.teams.get(1).starwars.get(1).battleRank);
+			System.out.println("Pokemon");
+			System.out.println(data.teams.get(1).pokemon.get(1).pokeName);
+			System.out.println(data.teams.get(1).pokemon.get(1).battleLevel);
+			*/
+			
+			String user1 = data.teams.get(0).user.name;
+			String user2 = data.teams.get(1).user.name;
+			int team1rank = Integer.valueOf(data.teams.get(0).starwars.get(0).battleRank + data.teams.get(0).pokemon.get(0).battleLevel);
+			int team2rank = Integer.valueOf(data.teams.get(0).starwars.get(1).battleRank + data.teams.get(0).pokemon.get(0).battleLevel);
+			
+					
+			// determine winner
+			if (team1rank > team2rank) {
+				System.out.println("Winner: " + user1);
+				return user1;
+			} else if (team1rank < team2rank) {
+				System.out.println("Winner: " + user2);
+				return user2;
 			} else {
 				System.out.println("Draw");
-				return null;
+				return "DRAW";
 			}
+			
 		} else {
 			System.out.println("ERR");
 		}
-
-		/*
-		 * Grab character directly from swapi headers.set("APIKEY", "3DPW");
-		 * headers.add("user-agent",
-		 * "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36"
-		 * ); String resourceURL= "https://swapi.co/api/people/";
-		 */
 
 		return null;
 	}
