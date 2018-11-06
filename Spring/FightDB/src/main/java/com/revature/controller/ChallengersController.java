@@ -65,7 +65,7 @@ public class ChallengersController {
 	}
 	
 	private Team buildTeam() {
-		User user = users_repo.findUser().get(0);
+		User user = users_repo.findUsers().get(0);
 		List<Pokemon> pokemon = pokemon_repo.findByUserId(user.getId());
 		List<StarWars> sw = sw_repo.findByUserId(user.getId());
 		Team team = new Team(user, pokemon, sw);
