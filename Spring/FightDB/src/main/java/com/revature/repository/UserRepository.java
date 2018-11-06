@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, String> {
 			"( SELECT * FROM USERS" + 
 			"ORDER BY dbms_random.value )" + 
 			"WHERE rownum = 1", nativeQuery = true)
-	List<User> findUser();
+	List<User> findUser();r
 }
